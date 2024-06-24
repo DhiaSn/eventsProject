@@ -6,6 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tn.esprit.eventsproject.DTOs.EventDTO;
+import tn.esprit.eventsproject.DTOs.LogisticsDTO;
+import tn.esprit.eventsproject.DTOs.ParticipantDTO;
 import tn.esprit.eventsproject.entities.Event;
 import tn.esprit.eventsproject.entities.Logistics;
 import tn.esprit.eventsproject.entities.Participant;
@@ -35,12 +38,28 @@ public class EventServicesImplMockTest {
     @InjectMocks
     private EventServicesImpl eventServices;
 
+    private ParticipantDTO participantDTO;
+    private EventDTO eventDTO;
+    private LogisticsDTO logisticsDTO;
     private Participant participant;
     private Event event;
     private Logistics logistics;
 
     @BeforeEach
     public void setUp() {
+        participantDTO = new ParticipantDTO();
+        participantDTO.setIdPart(1);
+        participantDTO.setNom("John");
+        participantDTO.setPrenom("Doe");
+
+        eventDTO = new EventDTO();
+        eventDTO.setIdEvent(1);
+        eventDTO.setDescription("Sample Event");
+
+        logisticsDTO = new LogisticsDTO();
+        logisticsDTO.setIdLog(1);
+        logisticsDTO.setDescription("Sample Logistics");
+
         participant = new Participant();
         participant.setIdPart(1);
         participant.setNom("John");
@@ -57,56 +76,56 @@ public class EventServicesImplMockTest {
 
     @Test
     public void testAddParticipant() {
-        when(participantRepository.save(participant)).thenReturn(participant);
+        when(participantRepository.save(any(Participant.class))).thenReturn(participant);
 
-        Participant result = eventServices.addParticipant(participant);
+        ParticipantDTO result = eventServices.addParticipant(participantDTO);
 
         assertNotNull(result);
-        assertEquals(participant, result);
-        verify(participantRepository, times(1)).save(participant);
+        assertEquals(participantDTO.getIdPart(), result.getIdPart());
+        verify(participantRepository, times(1)).save(any(Participant.class));
     }
 
     @Test
     public void testAddAffectEvenParticipantWithId() {
         when(participantRepository.findById(1)).thenReturn(Optional.of(participant));
-        when(eventRepository.save(event)).thenReturn(event);
+        when(eventRepository.save(any(Event.class))).thenReturn(event);
 
-        Event result = eventServices.addAffectEvenParticipant(event, 1);
+        EventDTO result = eventServices.addAffectEvenParticipant(eventDTO, 1);
 
         assertNotNull(result);
-        assertEquals(event, result);
+        assertEquals(eventDTO.getIdEvent(), result.getIdEvent());
         verify(participantRepository, times(1)).findById(1);
-        verify(eventRepository, times(1)).save(event);
+        verify(eventRepository, times(1)).save(any(Event.class));
     }
 
     @Test
     public void testAddAffectEvenParticipantWithEvent() {
-        Set<Participant> participants = new HashSet<>();
-        participants.add(participant);
-        event.setParticipants(participants);
+        Set<ParticipantDTO> participantsDTO = new HashSet<>();
+        participantsDTO.add(participantDTO);
+        eventDTO.setParticipants(participantsDTO);
 
         when(participantRepository.findById(1)).thenReturn(Optional.of(participant));
-        when(eventRepository.save(event)).thenReturn(event);
+        when(eventRepository.save(any(Event.class))).thenReturn(event);
 
-        Event result = eventServices.addAffectEvenParticipant(event);
+        EventDTO result = eventServices.addAffectEvenParticipant(eventDTO);
 
         assertNotNull(result);
-        assertEquals(event, result);
+        assertEquals(eventDTO.getIdEvent(), result.getIdEvent());
         verify(participantRepository, times(1)).findById(1);
-        verify(eventRepository, times(1)).save(event);
+        verify(eventRepository, times(1)).save(any(Event.class));
     }
 
     @Test
     public void testAddAffectLog() {
         when(eventRepository.findByDescription("Sample Event")).thenReturn(event);
-        when(logisticsRepository.save(logistics)).thenReturn(logistics);
+        when(logisticsRepository.save(any(Logistics.class))).thenReturn(logistics);
 
-        Logistics result = eventServices.addAffectLog(logistics, "Sample Event");
+        LogisticsDTO result = eventServices.addAffectLog(logisticsDTO, "Sample Event");
 
         assertNotNull(result);
-        assertEquals(logistics, result);
+        assertEquals(logisticsDTO.getIdLog(), result.getIdLog());
         verify(eventRepository, times(1)).findByDescription("Sample Event");
-        verify(logisticsRepository, times(1)).save(logistics);
+        verify(logisticsRepository, times(1)).save(any(Logistics.class));
     }
 
     @Test
@@ -114,7 +133,7 @@ public class EventServicesImplMockTest {
         List<Event> events = Collections.singletonList(event);
         when(eventRepository.findByDateDebutBetween(any(LocalDate.class), any(LocalDate.class))).thenReturn(events);
 
-        List<Logistics> result = eventServices.getLogisticsDates(LocalDate.now(), LocalDate.now().plusDays(1));
+        List<LogisticsDTO> result = eventServices.getLogisticsDates(LocalDate.now(), LocalDate.now().plusDays(1));
 
         assertNotNull(result);
         verify(eventRepository, times(1)).findByDateDebutBetween(any(LocalDate.class), any(LocalDate.class));
@@ -128,6 +147,7 @@ public class EventServicesImplMockTest {
         eventServices.calculCout();
 
         verify(eventRepository, times(1)).findByParticipants_NomAndParticipants_PrenomAndParticipants_Tache("Tounsi", "Ahmed", Tache.ORGANISATEUR);
-        verify(eventRepository, times(1)).save(event);
+        verify(eventRepository, times(1)).save(any(Event.class));
     }
+
 }
