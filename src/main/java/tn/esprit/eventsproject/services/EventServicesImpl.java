@@ -109,7 +109,7 @@ public class EventServicesImpl implements IEventServices {
         List<LogisticsDTO> logisticsListDTO = new ArrayList<>();
         for (Event event : events) {
             if (event.getLogistics().isEmpty()) {
-                return null;
+                return new ArrayList<>();
             } else {
                 Set<Logistics> logisticsSet = event.getLogistics();
                 for (Logistics logistics : logisticsSet) {
