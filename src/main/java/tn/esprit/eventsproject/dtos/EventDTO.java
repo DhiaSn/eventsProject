@@ -1,4 +1,4 @@
-package tn.esprit.eventsproject.DTOs;
+package tn.esprit.eventsproject.dtos;
 
 import lombok.Getter;
 import lombok.Setter;

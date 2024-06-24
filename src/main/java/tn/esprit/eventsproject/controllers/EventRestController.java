@@ -2,12 +2,9 @@ package tn.esprit.eventsproject.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.eventsproject.DTOs.EventDTO;
-import tn.esprit.eventsproject.DTOs.LogisticsDTO;
-import tn.esprit.eventsproject.DTOs.ParticipantDTO;
-import tn.esprit.eventsproject.entities.Event;
-import tn.esprit.eventsproject.entities.Logistics;
-import tn.esprit.eventsproject.entities.Participant;
+import tn.esprit.eventsproject.dtos.EventDTO;
+import tn.esprit.eventsproject.dtos.LogisticsDTO;
+import tn.esprit.eventsproject.dtos.ParticipantDTO;
 import tn.esprit.eventsproject.services.IEventServices;
 
 import java.time.LocalDate;
@@ -40,7 +37,7 @@ public class EventRestController {
     }
 
     @GetMapping("/getLogs/{d1}/{d2}")
-    public List<LogisticsDTO> getLogistiquesDates(@PathVariable("d1") LocalDate date_debut, @PathVariable("d2") LocalDate date_fin) {
-        return eventServices.getLogisticsDates(date_debut, date_fin);
+    public List<LogisticsDTO> getLogistiquesDates(@PathVariable("d1") LocalDate dateDebut, @PathVariable("d2") LocalDate dateFin) {
+        return eventServices.getLogisticsDates(dateDebut, dateFin);
     }
 }

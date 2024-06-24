@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import tn.esprit.eventsproject.DTOs.EventDTO;
-import tn.esprit.eventsproject.DTOs.LogisticsDTO;
-import tn.esprit.eventsproject.DTOs.ParticipantDTO;
+import tn.esprit.eventsproject.dtos.EventDTO;
+import tn.esprit.eventsproject.dtos.LogisticsDTO;
+import tn.esprit.eventsproject.dtos.ParticipantDTO;
 import tn.esprit.eventsproject.entities.Event;
 import tn.esprit.eventsproject.entities.Logistics;
 import tn.esprit.eventsproject.entities.Participant;
@@ -104,8 +104,8 @@ public class EventServicesImpl implements IEventServices {
     }
 
     @Override
-    public List<LogisticsDTO> getLogisticsDates(LocalDate date_debut, LocalDate date_fin) {
-        List<Event> events = eventRepository.findByDateDebutBetween(date_debut, date_fin);
+    public List<LogisticsDTO> getLogisticsDates(LocalDate dateDebut, LocalDate dateFin) {
+        List<Event> events = eventRepository.findByDateDebutBetween(dateDebut, dateFin);
         List<LogisticsDTO> logisticsListDTO = new ArrayList<>();
         for (Event event : events) {
             if (event.getLogistics().isEmpty()) {
