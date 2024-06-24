@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    tools {
+        maven 'Maven' // Replace 'Maven' with the name of your Maven tool installation
+    }
+    environment {
+    GIT_SSH_COMMAND = 'ssh -o StrictHostKeyChecking=no'
+    }
+ stages {
+
+        stage('Checkout Git') {
+            steps {
+                script {
+                    def remoteBranch = sh(script: 'git ls-remote -h -- git@github.com:DhiaSn/eventsProject.git HEAD', returnStdout: true).trim()
+                    echo "Remote branch: $remoteBranch"
+                    // Checkout the Git repository
+                    git credentialsId: 'github-ssh-key', url: 'git@github.com:DhiaSn/eventsProject.git'
+
+                }
+            }
+        }
+
+        stage('Clean repo') {
+            steps {
+                echo 'Cleaning...'
+                sh 'mvn clean'
+            }
+        }
+    }
+}
