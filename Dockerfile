@@ -17,6 +17,6 @@ ARG SPRING_PROFILES_ACTIVE=prod
 ENV APP_NAME $APP_NAME
 ENV SPRING_PROFILES_ACTIVE $SPRING_PROFILES_ACTIVE
 VOLUME /app
-ADD target/DevOps_Project-1.0.jar /app.jar
+ADD target/eventsProject-1.0.0-SNAPSHOT.jar /app.jar
 WORKDIR /app
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=$SPRING_PROFILES_ACTIVE", "/app.jar"]
