@@ -11,7 +11,7 @@
 
 FROM openjdk:11-jre-slim
 
-EXPOSE 8083
+EXPOSE 8089
 ARG APP_NAME=my-spring-boot-app
 ARG SPRING_PROFILES_ACTIVE=prod
 ENV APP_NAME $APP_NAME
