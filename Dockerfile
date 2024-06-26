@@ -1,19 +1,8 @@
-
-# Use an official OpenJDK runtime image (slim for smaller size)
-#FROM openjdk:11-jre-slim
-
-#VOLUME /app
-#EXPOSE 8080
-#ADD target/DevOps_Project-1.0.jar /app.jar
-
-#ENTRYPOINT ["java", "-jar", "/app.jar"]
-
-
 FROM openjdk:11-jre-slim
 
-EXPOSE 8087
-ARG APP_NAME=my-spring-boot-app
-ARG SPRING_PROFILES_ACTIVE=prod
+EXPOSE 8089
+ARG APP_NAME=eventsProject-1.0.0-SNAPSHOT
+ARG SPRING_PROFILES_ACTIVE=dev
 ENV APP_NAME $APP_NAME
 ENV SPRING_PROFILES_ACTIVE $SPRING_PROFILES_ACTIVE
 VOLUME /app
